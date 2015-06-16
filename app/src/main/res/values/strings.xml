@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Agendamento Express</string>
 
+    <string name="acao_novo_agendamento">Criar Agendamento</string>
+    <string name="title_activity_criar_agendamento">Criar Agendamento</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
 </resources>
