@@ -1,17 +1,17 @@
 package br.com.elsonsofts.studiodassobrancelhas.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,6 +80,56 @@ public class Utils {
             return false;
         }
         return false;
+    }
+
+    public static boolean validateData(View pView, String pMessage, int qtd) {
+        boolean dataValida = false;
+        if (pView instanceof EditText) {
+            EditText edText = (EditText) pView;
+            Editable text = edText.getText();
+            if (text != null && text.length() == qtd) {
+                String strText = text.toString();
+                if (!TextUtils.isEmpty(strText)) {
+                    SimpleDateFormat sdfEntrada = new SimpleDateFormat("dd/MM/yyyy");
+                    sdfEntrada.setLenient(false);
+                    try {
+                        Date data = sdfEntrada.parse(strText);
+                        dataValida = true;
+                    } catch (ParseException e) {
+                        dataValida = false;
+                        edText.setError(pMessage);
+                        edText.setFocusable(true);
+                        edText.requestFocus();
+                    }
+                }
+            }
+        }
+        return dataValida;
+    }
+
+    public static boolean validateHora(View pView, String pMessage, int qtd) {
+        boolean hora = false;
+        if (pView instanceof EditText) {
+            EditText edText = (EditText) pView;
+            Editable text = edText.getText();
+            if (text != null && text.length() == qtd) {
+                String strText = text.toString();
+                if (!TextUtils.isEmpty(strText)) {
+                    SimpleDateFormat sdfEntrada = new SimpleDateFormat("HH:mm");
+                    sdfEntrada.setLenient(false);
+                    try {
+                        Date data = sdfEntrada.parse(strText);
+                        hora = true;
+                    } catch (ParseException e) {
+                        hora = false;
+                        edText.setError(pMessage);
+                        edText.setFocusable(true);
+                        edText.requestFocus();
+                    }
+                }
+            }
+        }
+        return hora;
     }
 
     public static String CryptographyPassword(String input) {

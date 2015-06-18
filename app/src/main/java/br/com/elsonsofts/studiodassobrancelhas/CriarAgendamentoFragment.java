@@ -1,6 +1,8 @@
 package br.com.elsonsofts.studiodassobrancelhas;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.elsonsofts.studiodassobrancelhas.utils.Mask;
+import br.com.elsonsofts.studiodassobrancelhas.utils.Mensagem;
 import br.com.elsonsofts.studiodassobrancelhas.utils.Utils;
 
 public class CriarAgendamentoFragment extends Fragment {
@@ -53,10 +55,15 @@ public class CriarAgendamentoFragment extends Fragment {
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validarCamposNulos()) {
-                    Toast.makeText(getActivity(), "Dados Obrigatórios!", Toast.LENGTH_SHORT).show();
-                } else {
-                    new CreateNewAgendamento().execute();
+                if (validarCamposNulos()) {
+                    ConnectivityManager conectivtyManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    if (conectivtyManager.getActiveNetworkInfo() != null
+                            && conectivtyManager.getActiveNetworkInfo().isAvailable()
+                            && conectivtyManager.getActiveNetworkInfo().isConnected()) {
+                        new CreateNewAgendamento().execute();
+                    } else {
+                        Mensagem.exibir(getActivity(), getResources().getString(R.string.msg_sem_conexao));
+                    }
                 }
             }
         });
@@ -69,9 +76,9 @@ public class CriarAgendamentoFragment extends Fragment {
                 "Por Favor, Verificar o Campo de Nome!"))
                 && (Utils.validateCampo(txtTelefone1,
                 "Por Favor, Verificar o Campo de Telefone!", 14))
-                && (Utils.validateCampo(txtDataAgendada,
+                && (Utils.validateData(txtDataAgendada,
                 "Por Favor, Verificar a Data de Agendamento!", 10))
-                && (Utils.validateCampo(txtHoraAgendada,
+                && (Utils.validateHora(txtHoraAgendada,
                 "Por Favor, Verificar a Hora de Agendamento!", 5))) {
             ok = true;
             if (txtEmail.length() > 0) {
@@ -110,7 +117,8 @@ public class CriarAgendamentoFragment extends Fragment {
             try {
                 criou = criarAgendamentoHttp.criarAgendamentoRequest(receberValores());
             } catch (Exception e) {
-                Toast.makeText(getActivity(), "Verifique se os Campos estão preenchidos corretamente!", Toast.LENGTH_LONG).show();
+                //Mensagem.exibir(getActivity(), "Verifique se os Campos estao preenchidos corretamente!");
+                throw e;
             }
             return null;
         }
@@ -119,10 +127,12 @@ public class CriarAgendamentoFragment extends Fragment {
             try {
                 pDialog.dismiss();
                 if (criou == true) {
-                    Toast.makeText(getActivity(), "Usuário Cadastrado com Sucesso!", Toast.LENGTH_LONG).show();
+                    String id = " " + CriarAgendamentoHttp.idAgendamento;
+                    Mensagem.exibir(getActivity(), getResources().getString(R.string.msg_usuario_cadastrado) + id);
+                    CriarAgendamentoHttp.idAgendamento = "-1";
                     getActivity().finish();
                 } else {
-                    Toast.makeText(getActivity(), "Não se preocupe, já estamos trabalhando nisso!", Toast.LENGTH_LONG).show();
+                    Mensagem.exibir(getActivity(), getResources().getString(R.string.msg_trabalhando));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -134,7 +144,7 @@ public class CriarAgendamentoFragment extends Fragment {
         String data = Mask.unmask(txtDataAgendada.getText().toString());
         String hora = Mask.unmask(txtHoraAgendada.getText().toString());
         String dataEnvio = data.substring(4, 8) //ano
-                + data.substring(2, 4) //mês
+                + data.substring(2, 4) //mes
                 + data.substring(0, 2) //dia
                 + hora.substring(0, 2) //hora
                 + hora.substring(2, 4) // minuto
@@ -146,6 +156,18 @@ public class CriarAgendamentoFragment extends Fragment {
         params.add(new BasicNameValuePair("telCliente1", Mask.unmask(txtTelefone1.getText().toString())));
         params.add(new BasicNameValuePair("dataAgendada", dataEnvio));
 
+        if (Mask.unmask(txtTelefone2.getText().toString()).length() > 0) {
+            params.add(new BasicNameValuePair("telCliente2", Mask.unmask(txtTelefone2.getText().toString())));
+        }
+        if (txtEndereco.getText().toString().length() > 0) {
+            params.add(new BasicNameValuePair("endereco", txtEndereco.getText().toString()));
+        }
+        if (txtPontoRef.getText().toString().length() > 0) {
+            params.add(new BasicNameValuePair("pontoRef", txtPontoRef.getText().toString()));
+        }
+        if (txtEmail.getText().toString().length() > 0) {
+            params.add(new BasicNameValuePair("email", txtEmail.getText().toString()));
+        }
         return params;
     }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 public class CriarAgendamentoHttp {
     static InputStream is = null;
     private boolean criado = false;
+    static String idAgendamento = "-1";
 
     public CriarAgendamentoHttp() {
 
@@ -33,21 +34,20 @@ public class CriarAgendamentoHttp {
             HttpGet httpGet = new HttpGet(URL);
             HttpResponse httpResponse = httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
-
             is = httpEntity.getContent();
 
             JSONObject reader = new JSONObject(bytesToString(is));
-            String id, message;
-            id = String.valueOf(reader.getString("success"));
-            if (id.equals("1")) {
+            String success, message;
+            success = String.valueOf(reader.getString("success"));
+            if (success.equals("1")) {
                 criado = true;
+                idAgendamento = String.valueOf(reader.getString("id"));
             } else {
                 criado = false;
                 message = String.valueOf(reader.getString("message"));
-                String erro = String.format("http://elsongabriel.com/webservices/agendamentos/send_log.php?message=" + message, "utf-8");
-                httpGet = new HttpGet(erro);
+                String erro = String.format(message, "utf-8");
+                httpGet = new HttpGet("http://elsongabriel.com/webservices/agendamentos/send_log.php?erro=" + erro.replace(" ", "%20"));
                 httpClient.execute(httpGet);
-                //httpEntity = httpResponse.getEntity();
             }
         } catch (UnsupportedEncodingException e) {
             criado = false;

@@ -3,7 +3,11 @@
 
     <string name="acao_novo_agendamento">Criar Agendamento</string>
     <string name="title_activity_criar_agendamento">Criar Agendamento</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
+    <!--MSGS-->
+    <string name="msg_sem_conexao">Sem conexão com a Internet</string>
+    <string name="msg_dados_obrigatorios">Dados Obrigatórios!</string>
+    <string name="msg_usuario_cadastrado">Usuário Cadastrado com Sucesso. Seu ID de acesso é: </string>
+    <string name="msg_trabalhando">Não se preocupe, já estamos trabalhando nisso!</string>
 
 </resources>
