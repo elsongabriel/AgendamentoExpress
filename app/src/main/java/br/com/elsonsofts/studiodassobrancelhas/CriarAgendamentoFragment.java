@@ -26,7 +26,7 @@ public class CriarAgendamentoFragment extends Fragment {
 
     private EditText txtNome, txtTelefone1, txtTelefone2, txtEndereco, txtPontoRef, txtEmail, txtDataAgendada, txtHoraAgendada;
     private Button btnSalvar;
-    private CriarAgendamentoHttp criarAgendamentoHttp = new CriarAgendamentoHttp();
+    private ConexaoHttp conexaoHttp = new ConexaoHttp();
     private ProgressDialog pDialog;
 
     @Override
@@ -72,24 +72,20 @@ public class CriarAgendamentoFragment extends Fragment {
 
     public boolean validarCamposNulos() {
         boolean ok = false;
-        if ((Utils.validateNotNull(txtNome,
-                "Por Favor, Verificar o Campo de Nome!"))
-                && (Utils.validateCampo(txtTelefone1,
-                "Por Favor, Verificar o Campo de Telefone!", 14))
-                && (Utils.validateData(txtDataAgendada,
-                "Por Favor, Verificar a Data de Agendamento!", 10))
-                && (Utils.validateHora(txtHoraAgendada,
-                "Por Favor, Verificar a Hora de Agendamento!", 5))) {
+        if ((Utils.validateCampo(txtNome, getResources().getString(R.string.txt_nome), 2))
+                && (Utils.validateCampo(txtTelefone1, getResources().getString(R.string.txt_telefone), 14))
+                && (Utils.validateData(txtDataAgendada, getResources().getString(R.string.txt_data_agn), 10))
+                && (Utils.validateHora(txtHoraAgendada, getResources().getString(R.string.txt_hora_agn), 5))) {
             ok = true;
             if (txtEmail.length() > 0) {
-                if (Utils.validateEmail(txtEmail, "Por Favor, Verificar o Campo de Email!")) {
+                if (Utils.validateEmail(txtEmail, getResources().getString(R.string.txt_email))) {
                     ok = true;
                 } else {
                     ok = false;
                 }
             }
             if (txtTelefone2.length() > 0) {
-                if (Utils.validateCampo(txtTelefone2, "Por Favor, Verificar o Campo de Telefone!", 14)) {
+                if (Utils.validateCampo(txtTelefone2, getResources().getString(R.string.txt_telefone), 14)) {
                     ok = true;
                 } else {
                     ok = false;
@@ -115,7 +111,7 @@ public class CriarAgendamentoFragment extends Fragment {
 
         protected String doInBackground(String... args) {
             try {
-                criou = criarAgendamentoHttp.criarAgendamentoRequest(receberValores());
+                criou = conexaoHttp.criarAgendamentoRequest(receberValores());
             } catch (Exception e) {
                 //Mensagem.exibir(getActivity(), "Verifique se os Campos estao preenchidos corretamente!");
                 throw e;
@@ -127,9 +123,9 @@ public class CriarAgendamentoFragment extends Fragment {
             try {
                 pDialog.dismiss();
                 if (criou == true) {
-                    String id = " " + CriarAgendamentoHttp.idAgendamento;
+                    String id = " " + ConexaoHttp.idAgendamento;
                     Mensagem.exibir(getActivity(), getResources().getString(R.string.msg_usuario_cadastrado) + id);
-                    CriarAgendamentoHttp.idAgendamento = "-1";
+                    ConexaoHttp.idAgendamento = "-1";
                     getActivity().finish();
                 } else {
                     Mensagem.exibir(getActivity(), getResources().getString(R.string.msg_trabalhando));

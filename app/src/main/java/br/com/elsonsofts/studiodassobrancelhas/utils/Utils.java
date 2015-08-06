@@ -15,23 +15,26 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.elsonsofts.studiodassobrancelhas.R;
+
 @SuppressLint("SimpleDateFormat")
 public class Utils {
 
     private static final String LOGIN = "Login";
 
-    public static boolean validateNotNull(View pView, String pMessage) {
+    public static boolean validateCampo(View pView, String campo, int qtd) {
+        String messageError = pView.getResources().getString(R.string.msg_verificar_campo) + campo;
         if (pView instanceof EditText) {
             EditText edText = (EditText) pView;
             Editable text = edText.getText();
-            if (text != null && text.length() >= 2) {
+            if (text != null && text.length() == qtd) {
                 String strText = text.toString();
                 if (!TextUtils.isEmpty(strText)) {
                     return true;
                 }
             }
             // em qualquer outra condição é gerado um erro
-            edText.setError(pMessage);
+            edText.setError(messageError);
             edText.setFocusable(true);
             edText.requestFocus();
             return false;
@@ -39,7 +42,8 @@ public class Utils {
         return false;
     }
 
-    public static boolean validateEmail(View pView, String pMessage) {
+    public static boolean validateEmail(View pView, String campo) {
+        String messageError = pView.getResources().getString(R.string.msg_verificar_campo) + campo;
         boolean emailValido = false;
         if (pView instanceof EditText) {
             EditText edText = (EditText) pView;
@@ -54,7 +58,7 @@ public class Utils {
                     emailValido = true;
                 } else {
                     emailValido = false;
-                    edText.setError(pMessage);
+                    edText.setError(messageError);
                     edText.setFocusable(true);
                     edText.requestFocus();
                 }
@@ -63,26 +67,8 @@ public class Utils {
         return emailValido;
     }
 
-    public static boolean validateCampo(View pView, String pMessage, int qtd) {
-        if (pView instanceof EditText) {
-            EditText edText = (EditText) pView;
-            Editable text = edText.getText();
-            if (text != null && text.length() == qtd) {
-                String strText = text.toString();
-                if (!TextUtils.isEmpty(strText)) {
-                    return true;
-                }
-            }
-            // em qualquer outra condição é gerado um erro
-            edText.setError(pMessage);
-            edText.setFocusable(true);
-            edText.requestFocus();
-            return false;
-        }
-        return false;
-    }
-
-    public static boolean validateData(View pView, String pMessage, int qtd) {
+    public static boolean validateData(View pView, String campo, int qtd) {
+        String messageError = pView.getResources().getString(R.string.msg_verificar_campo) + campo;
         boolean dataValida = false;
         if (pView instanceof EditText) {
             EditText edText = (EditText) pView;
@@ -97,7 +83,7 @@ public class Utils {
                         dataValida = true;
                     } catch (ParseException e) {
                         dataValida = false;
-                        edText.setError(pMessage);
+                        edText.setError(messageError);
                         edText.setFocusable(true);
                         edText.requestFocus();
                     }
@@ -107,7 +93,8 @@ public class Utils {
         return dataValida;
     }
 
-    public static boolean validateHora(View pView, String pMessage, int qtd) {
+    public static boolean validateHora(View pView, String campo, int qtd) {
+        String messageError = pView.getResources().getString(R.string.msg_verificar_campo) + campo;
         boolean hora = false;
         if (pView instanceof EditText) {
             EditText edText = (EditText) pView;
@@ -122,7 +109,7 @@ public class Utils {
                         hora = true;
                     } catch (ParseException e) {
                         hora = false;
-                        edText.setError(pMessage);
+                        edText.setError(messageError);
                         edText.setFocusable(true);
                         edText.requestFocus();
                     }
