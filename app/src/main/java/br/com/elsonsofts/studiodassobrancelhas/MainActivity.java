@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
         btnProcurar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((Utils.validateCampo(txtPesquisa, getResources().getString(R.string.txt_pesquisa), 1))) {
+                if ((Utils.validateCampo(txtPesquisa, getResources().getString(R.string.txt_pesquisa), 0))) {
                     ConnectivityManager conectivtyManager = (ConnectivityManager) MainActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
                     if (conectivtyManager.getActiveNetworkInfo() != null
                             && conectivtyManager.getActiveNetworkInfo().isAvailable()
@@ -63,7 +63,8 @@ public class MainActivity extends ActionBarActivity {
         protected String doInBackground(String... args) {
             try {
                 usuario = conexaoHttp.validarPesquisaUsuarioId(txtPesquisa);
-                agendamento = conexaoHttp.validarPesquisaAgendaId(txtPesquisa);
+                if (usuario == null)
+                    agendamento = conexaoHttp.validarPesquisaAgendaId(txtPesquisa);
             } catch (Exception e) {
                 throw e;
             }
@@ -75,10 +76,10 @@ public class MainActivity extends ActionBarActivity {
                 pDialog.dismiss();
                 if (usuario != null) {
                     // TODO
-                    // criar nova tela de visualização do agendamento para adm
+                    // criar nova tela de visualizacao do agendamento para adm
                 } else if (agendamento != null) {
                     // TODO
-                    // criar nova tela de visualização do agendamento para cliente
+                    // criar nova tela de visualizacao do agendamento para cliente
                 } else {
                     Mensagem.exibir(MainActivity.this, getResources().getString(R.string.msg_not_found));
                 }
