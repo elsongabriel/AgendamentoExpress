@@ -1,4 +1,4 @@
-package br.com.elsonsofts.studiodassobrancelhas;
+package br.com.elsonsofts.studiodassobrancelhas.basicas;
 
 import java.io.Serializable;
 

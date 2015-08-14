@@ -27,10 +27,19 @@ public class Utils {
         if (pView instanceof EditText) {
             EditText edText = (EditText) pView;
             Editable text = edText.getText();
-            if (text != null && text.length() == qtd) {
-                String strText = text.toString();
-                if (!TextUtils.isEmpty(strText)) {
-                    return true;
+            if (campo.equals("Pesquisa!") || campo.equals("Nome!")) {
+                if (text != null && text.length() > qtd) {
+                    String strText = text.toString();
+                    if (!TextUtils.isEmpty(strText)) {
+                        return true;
+                    }
+                }
+            } else {
+                if (text != null && text.length() == qtd) {
+                    String strText = text.toString();
+                    if (!TextUtils.isEmpty(strText)) {
+                        return true;
+                    }
                 }
             }
             // em qualquer outra condição é gerado um erro

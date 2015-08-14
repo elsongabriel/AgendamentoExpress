@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import br.com.elsonsofts.studiodassobrancelhas.basicas.Agendamento;
+import br.com.elsonsofts.studiodassobrancelhas.basicas.Usuario;
+import br.com.elsonsofts.studiodassobrancelhas.utils.ConexaoHttp;
 import br.com.elsonsofts.studiodassobrancelhas.utils.Mensagem;
 import br.com.elsonsofts.studiodassobrancelhas.utils.Utils;
 
@@ -22,8 +25,8 @@ public class MainActivity extends ActionBarActivity {
     private Button btnProcurar;
     private ConexaoHttp conexaoHttp = new ConexaoHttp();
     private ProgressDialog pDialog;
-    private static Agendamento agendamento;
-    private static Usuario usuario;
+    private Agendamento agendamento;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +37,12 @@ public class MainActivity extends ActionBarActivity {
         btnProcurar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((Utils.validateCampo(txtPesquisa, getResources().getString(R.string.txt_pesquisa), 1))) {
+                if ((Utils.validateCampo(txtPesquisa, getResources().getString(R.string.txt_pesquisa), 0))) {
                     ConnectivityManager conectivtyManager = (ConnectivityManager) MainActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
                     if (conectivtyManager.getActiveNetworkInfo() != null
                             && conectivtyManager.getActiveNetworkInfo().isAvailable()
                             && conectivtyManager.getActiveNetworkInfo().isConnected()) {
-                        new Validar().execute();
+                        new ValidarLogin().execute();
                     } else {
                         Mensagem.exibir(MainActivity.this, getResources().getString(R.string.msg_sem_conexao));
                     }
@@ -48,22 +51,24 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    class Validar extends AsyncTask<String, String, String> {
+    class ValidarLogin extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Validando..");
+            pDialog.setMessage(getResources().getString(R.string.msg_validando));
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
+            pDialog.setCancelable(false);
             pDialog.show();
         }
 
         protected String doInBackground(String... args) {
             try {
-                usuario = conexaoHttp.validarPesquisaUsuarioId(txtPesquisa);
-                agendamento = conexaoHttp.validarPesquisaAgendaId(txtPesquisa);
+                conexaoHttp.validarPesquisaId(txtPesquisa);
+                usuario = ConexaoHttp.usuario;
+                if (usuario == null)
+                    agendamento = ConexaoHttp.agendamento;
             } catch (Exception e) {
                 throw e;
             }
@@ -74,11 +79,10 @@ public class MainActivity extends ActionBarActivity {
             try {
                 pDialog.dismiss();
                 if (usuario != null) {
-                    // TODO
-                    // criar nova tela de visualização do agendamento para adm
+                    startActivity(new Intent(MainActivity.this, HomeAdmActivity.class));
                 } else if (agendamento != null) {
-                    // TODO
-                    // criar nova tela de visualização do agendamento para cliente
+                    Mensagem.exibir(MainActivity.this, "Função indisponível no momento!");
+                    //startActivity(new Intent(MainActivity.this, HomeAgndActivity.class));
                 } else {
                     Mensagem.exibir(MainActivity.this, getResources().getString(R.string.msg_not_found));
                 }
