@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">Agendamento Express</string>
+    <string name="app_name">Studio das Sobrancelhas</string>
 
     <string name="acao_novo_agendamento">Criar Agendamento</string>
     <string name="title_activity_criar_agendamento">Criar Agendamento</string>
-    <string name="title_activity_adm_view">Agendamento Express</string>
 
     <!--MSGS-->
     <string name="msg_verificar_campo">Por Favor, Verificar o Campo de&#160;</string>
@@ -28,10 +27,5 @@
     <string name="txt_hora_agn">Hora de Agendamento!</string>
     <string name="lbl_agdns_req">Agendamentos marcados</string>
     <string name="lbl_agdns_con">Agendamentos confimados</string>
-    <string name="title_activity_list_agn_conf">ListAgnConfActivity</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
 
 </resources>
