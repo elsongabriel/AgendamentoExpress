@@ -25,9 +25,10 @@ public class DetalheAgendamentoFragment extends Fragment {
     private ConexaoHttp conexaoHttp = new ConexaoHttp();
     private ProgressDialog pDialog;
 
-    public static DetalheAgendamentoFragment novaInstancia(Agendamento agendamento) {
+    public static DetalheAgendamentoFragment novaInstancia(Agendamento agendamento, String tipoUser) {
         Bundle args = new Bundle();
         args.putSerializable("agendamento", agendamento);
+        args.putSerializable("tipoUser", tipoUser);
 
         DetalheAgendamentoFragment f = new DetalheAgendamentoFragment();
         f.setArguments(args);
@@ -59,6 +60,15 @@ public class DetalheAgendamentoFragment extends Fragment {
                 .findViewById(R.id.imgBtnCancel);
 
         atualizar();
+
+        String tipoUser = (String) getArguments().getSerializable("tipoUser");
+        if (tipoUser != null) {
+            if (tipoUser.equals("cliente")) {
+                imgBtnAceitar.setVisibility(View.INVISIBLE);
+                imgBtnRecusar.setVisibility(View.INVISIBLE);
+                imgBtnCancel.setVisibility(View.INVISIBLE);
+            }
+        }
 
         imgBtnAceitar.setOnClickListener(new View.OnClickListener() {
             @Override

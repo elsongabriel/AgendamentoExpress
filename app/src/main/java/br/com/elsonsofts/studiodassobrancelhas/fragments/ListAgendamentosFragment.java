@@ -27,7 +27,7 @@ public class ListAgendamentosFragment extends ListFragment {
     private List<Agendamento> agendamentosRequests;
     private List<Agendamento> agendamentosConfirmados;
     private AgendamentoAdapter adapter;
-    String acao = "";
+    private String acao = "";
 
     public static ListAgendamentosFragment novaInstancia(String acao) {
         Bundle args = new Bundle();
@@ -53,13 +53,13 @@ public class ListAgendamentosFragment extends ListFragment {
 
         if (acao.equals("reqs")) {
             if (agendamentosRequests != null) {
-                refreshList();
+                refreshList(agendamentosRequests);
             } else {
                 realizarDownload(0);
             }
         } else if (acao.equals("conf")) {
             if (agendamentosConfirmados != null) {
-                refreshList();
+                refreshList(agendamentosConfirmados);
             } else {
                 realizarDownload(1);
             }
@@ -105,8 +105,13 @@ public class ListAgendamentosFragment extends ListFragment {
             super.onPostExecute(result);
             try {
                 if (result != null) {
-                    agendamentosRequests = result;
-                    refreshList();
+                    if (acao.equals("reqs")) {
+                        agendamentosRequests = result;
+                        refreshList(agendamentosRequests);
+                    } else if (acao.equals("conf")) {
+                        agendamentosConfirmados = result;
+                        refreshList(agendamentosConfirmados);
+                    }
                     pDialog.dismiss();
                 } else {
                     Mensagem.exibir(getActivity(), getResources().getString(R.string.msg_not_agenda));
@@ -122,13 +127,18 @@ public class ListAgendamentosFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         if (getActivity() instanceof AgendamentoClicadoListener) {
-            ((AgendamentoClicadoListener) getActivity()).agendamentoClicado(agendamentosRequests
-                    .get(position));
+            if (acao.equals("reqs")) {
+                ((AgendamentoClicadoListener) getActivity()).agendamentoClicado(agendamentosRequests
+                        .get(position));
+            } else if (acao.equals("conf")) {
+                ((AgendamentoClicadoListener) getActivity()).agendamentoClicado(agendamentosConfirmados
+                        .get(position));
+            }
         }
     }
 
-    private void refreshList() {
-        adapter = new AgendamentoAdapter(getActivity(), agendamentosRequests);
+    private void refreshList(List<Agendamento> a) {
+        adapter = new AgendamentoAdapter(getActivity(), a);
         setListAdapter(adapter);
     }
 }

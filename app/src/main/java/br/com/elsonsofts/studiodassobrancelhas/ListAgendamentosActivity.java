@@ -9,12 +9,19 @@ import br.com.elsonsofts.studiodassobrancelhas.fragments.ListAgendamentosFragmen
 
 public class ListAgendamentosActivity extends ActionBarActivity implements AgendamentoClicadoListener {
 
+    static String acaoSalva = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_agn);
 
         String acao = (String) getIntent().getSerializableExtra("acao");
+        if (acao != null) {
+            acaoSalva = acao;
+        } else {
+            acao = acaoSalva;
+        }
         ListAgendamentosFragment l = ListAgendamentosFragment
                 .novaInstancia(acao);
 

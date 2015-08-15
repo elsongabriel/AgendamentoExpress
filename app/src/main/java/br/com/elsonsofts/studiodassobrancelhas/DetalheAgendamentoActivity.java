@@ -13,8 +13,9 @@ public class DetalheAgendamentoActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         Agendamento agendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
+        String tipoUser = (String) getIntent().getSerializableExtra("tipoUser");
         DetalheAgendamentoFragment a = DetalheAgendamentoFragment
-                .novaInstancia(agendamento);
+                .novaInstancia(agendamento, tipoUser);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, a).commit();
