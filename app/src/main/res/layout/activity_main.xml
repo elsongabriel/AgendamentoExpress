@@ -12,10 +12,10 @@
         android:id="@+id/btnProcurarId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="126dp"
-        android:text="Procurar ID" />
+        android:text="Procurar ID"
+        android:layout_below="@+id/checkSalvar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:id="@+id/txtPesquisarId"

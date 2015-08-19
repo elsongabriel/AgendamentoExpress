@@ -48,7 +48,7 @@ public class CriarAgendamentoFragment extends Fragment {
         txtPontoRef = (EditText) layout.findViewById(R.id.txtPontoCriar);
         txtEmail = (EditText) layout.findViewById(R.id.txtEmailCriar);
         txtDataAgendada = (EditText) layout.findViewById(R.id.txtDataAgendaCriar);
-        txtDataAgendada.addTextChangedListener(Mask.insertEdText("##/##/####",
+        txtDataAgendada.addTextChangedListener(Mask.insertEdText("##/##",
                 txtDataAgendada));
         txtHoraAgendada = (EditText) layout.findViewById(R.id.txtHoraAgendaCriar);
         txtHoraAgendada.addTextChangedListener(Mask.insertEdText("##:##",
@@ -76,7 +76,7 @@ public class CriarAgendamentoFragment extends Fragment {
         boolean ok = false;
         if ((Utils.validateCampo(txtNome, getResources().getString(R.string.txt_nome), 2))
                 && (Utils.validateCampo(txtTelefone1, getResources().getString(R.string.txt_telefone), 14))
-                && (Utils.validateData(txtDataAgendada, getResources().getString(R.string.txt_data_agn), 10))
+                && (Utils.validateData(txtDataAgendada, getResources().getString(R.string.txt_data_agn), 5))
                 && (Utils.validateHora(txtHoraAgendada, getResources().getString(R.string.txt_hora_agn), 5))) {
             ok = true;
             if (txtEmail.length() > 0) {
@@ -140,7 +140,7 @@ public class CriarAgendamentoFragment extends Fragment {
     public List<NameValuePair> receberValores() {
         String data = Mask.unmask(txtDataAgendada.getText().toString());
         String hora = Mask.unmask(txtHoraAgendada.getText().toString());
-        String dataEnvio = data.substring(4, 8) //ano
+        String dataEnvio = "2015"//data.substring(4, 8) //ano
                 + data.substring(2, 4) //mes
                 + data.substring(0, 2) //dia
                 + hora.substring(0, 2) //hora

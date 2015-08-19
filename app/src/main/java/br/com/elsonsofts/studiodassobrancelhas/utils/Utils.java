@@ -85,7 +85,7 @@ public class Utils {
             if (text != null && text.length() == qtd) {
                 String strText = text.toString();
                 if (!TextUtils.isEmpty(strText)) {
-                    SimpleDateFormat sdfEntrada = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat sdfEntrada = new SimpleDateFormat("dd/MM");
                     sdfEntrada.setLenient(false);
                     try {
                         Date data = sdfEntrada.parse(strText);

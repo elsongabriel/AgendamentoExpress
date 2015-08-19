@@ -183,7 +183,7 @@
                 android:layout_alignBottom="@+id/txtDataAgendaCriar"
                 android:layout_toEndOf="@+id/txtDataAgendaCriar"
                 android:layout_toRightOf="@+id/txtDataAgendaCriar"
-                android:text="às"
+                android:text="/2015 às"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
