@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Agendamento Express</string>
+    <string name="app_name">Studio das Sobrancelhas</string>
 
     <string name="acao_novo_agendamento">Criar Agendamento</string>
     <string name="title_activity_criar_agendamento">Criar Agendamento</string>
@@ -7,10 +7,16 @@
     <!--MSGS-->
     <string name="msg_verificar_campo">Por Favor, Verificar o Campo de&#160;</string>
     <string name="msg_sem_conexao">Sem conexão com a Internet</string>
+    <string name="msg_validando">Validando..</string>
+    <string name="msg_salvando">Salvando Agendamento..</string>
     <string name="msg_dados_obrigatorios">Dados Obrigatórios!</string>
     <string name="msg_usuario_cadastrado">Usuário Cadastrado com Sucesso. Seu ID de acesso é:&#160;</string>
     <string name="msg_trabalhando">Não se preocupe, já estamos trabalhando nisso!</string>
     <string name="msg_not_found">ID não encontrado!</string>
+    <string name="msg_carregando">Carregando..</string>
+    <string name="msg_not_agenda">Sem agendamentos no momento!</string>
+    <string name="msg_sim">Sim</string>
+    <string name="msg_nao">Não</string>
 
     <!--CAMPOS-->
     <string name="txt_pesquisa">Pesquisa!</string>
@@ -19,5 +25,7 @@
     <string name="txt_email">Email!</string>
     <string name="txt_data_agn">Data de Agendamento!</string>
     <string name="txt_hora_agn">Hora de Agendamento!</string>
+    <string name="lbl_agdns_req">Agendamentos marcados</string>
+    <string name="lbl_agdns_con">Agendamentos confimados</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package br.com.elsonsofts.studiodassobrancelhas;
+package br.com.elsonsofts.studiodassobrancelhas.basicas;
 
 import java.io.Serializable;
 
@@ -12,7 +12,9 @@ public class Agendamento implements Serializable {
     public String email;
     public String dataCadastro;
     public String dataAgendamento;
+    //0 pendente, 1 confirmado
     public boolean confirmado;
+    //0 cancelado, 1 confirmado
     public boolean ativo;
 
     public Agendamento(Integer id, String nome, String telefone1, String telefone2,
@@ -119,6 +121,7 @@ public class Agendamento implements Serializable {
         this.ativo = ativo;
     }
 
-    public Agendamento(){}
+    public Agendamento() {
+    }
 }
 

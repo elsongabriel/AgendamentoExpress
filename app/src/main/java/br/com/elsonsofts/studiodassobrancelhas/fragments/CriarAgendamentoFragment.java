@@ -1,4 +1,4 @@
-package br.com.elsonsofts.studiodassobrancelhas;
+package br.com.elsonsofts.studiodassobrancelhas.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +18,8 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.elsonsofts.studiodassobrancelhas.R;
+import br.com.elsonsofts.studiodassobrancelhas.utils.ConexaoHttp;
 import br.com.elsonsofts.studiodassobrancelhas.utils.Mask;
 import br.com.elsonsofts.studiodassobrancelhas.utils.Mensagem;
 import br.com.elsonsofts.studiodassobrancelhas.utils.Utils;
@@ -46,7 +48,7 @@ public class CriarAgendamentoFragment extends Fragment {
         txtPontoRef = (EditText) layout.findViewById(R.id.txtPontoCriar);
         txtEmail = (EditText) layout.findViewById(R.id.txtEmailCriar);
         txtDataAgendada = (EditText) layout.findViewById(R.id.txtDataAgendaCriar);
-        txtDataAgendada.addTextChangedListener(Mask.insertEdText("##/##/####",
+        txtDataAgendada.addTextChangedListener(Mask.insertEdText("##/##",
                 txtDataAgendada));
         txtHoraAgendada = (EditText) layout.findViewById(R.id.txtHoraAgendaCriar);
         txtHoraAgendada.addTextChangedListener(Mask.insertEdText("##:##",
@@ -74,7 +76,7 @@ public class CriarAgendamentoFragment extends Fragment {
         boolean ok = false;
         if ((Utils.validateCampo(txtNome, getResources().getString(R.string.txt_nome), 2))
                 && (Utils.validateCampo(txtTelefone1, getResources().getString(R.string.txt_telefone), 14))
-                && (Utils.validateData(txtDataAgendada, getResources().getString(R.string.txt_data_agn), 10))
+                && (Utils.validateData(txtDataAgendada, getResources().getString(R.string.txt_data_agn), 5))
                 && (Utils.validateHora(txtHoraAgendada, getResources().getString(R.string.txt_hora_agn), 5))) {
             ok = true;
             if (txtEmail.length() > 0) {
@@ -103,9 +105,9 @@ public class CriarAgendamentoFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage("Salvando Agendamento..");
+            pDialog.setMessage(getResources().getString(R.string.msg_salvando));
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
+            pDialog.setCancelable(false);
             pDialog.show();
         }
 
@@ -113,7 +115,6 @@ public class CriarAgendamentoFragment extends Fragment {
             try {
                 criou = conexaoHttp.criarAgendamentoRequest(receberValores());
             } catch (Exception e) {
-                //Mensagem.exibir(getActivity(), "Verifique se os Campos estao preenchidos corretamente!");
                 throw e;
             }
             return null;
@@ -124,7 +125,7 @@ public class CriarAgendamentoFragment extends Fragment {
                 pDialog.dismiss();
                 if (criou == true) {
                     String id = " " + ConexaoHttp.idAgendamento;
-                    Mensagem.exibir(getActivity(), getResources().getString(R.string.msg_usuario_cadastrado) + id);
+                    Mensagem.exibirLong(getActivity(), getResources().getString(R.string.msg_usuario_cadastrado) + id);
                     ConexaoHttp.idAgendamento = "-1";
                     getActivity().finish();
                 } else {
@@ -139,7 +140,7 @@ public class CriarAgendamentoFragment extends Fragment {
     public List<NameValuePair> receberValores() {
         String data = Mask.unmask(txtDataAgendada.getText().toString());
         String hora = Mask.unmask(txtHoraAgendada.getText().toString());
-        String dataEnvio = data.substring(4, 8) //ano
+        String dataEnvio = "2015"//data.substring(4, 8) //ano
                 + data.substring(2, 4) //mes
                 + data.substring(0, 2) //dia
                 + hora.substring(0, 2) //hora

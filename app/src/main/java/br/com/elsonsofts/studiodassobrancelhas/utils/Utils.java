@@ -27,7 +27,7 @@ public class Utils {
         if (pView instanceof EditText) {
             EditText edText = (EditText) pView;
             Editable text = edText.getText();
-            if (campo.equals("Pesquisa!")) {
+            if (campo.equals("Pesquisa!") || campo.equals("Nome!")) {
                 if (text != null && text.length() > qtd) {
                     String strText = text.toString();
                     if (!TextUtils.isEmpty(strText)) {
@@ -85,7 +85,7 @@ public class Utils {
             if (text != null && text.length() == qtd) {
                 String strText = text.toString();
                 if (!TextUtils.isEmpty(strText)) {
-                    SimpleDateFormat sdfEntrada = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat sdfEntrada = new SimpleDateFormat("dd/MM");
                     sdfEntrada.setLenient(false);
                     try {
                         Date data = sdfEntrada.parse(strText);
